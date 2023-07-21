@@ -42,8 +42,8 @@ class Mobilephone
     if(addressbook.count(contact) > 0)
     {
       cout << "enter message: ";
-      cin >> message;
-
+      cin.ignore();
+      getline(cin, message);
       cout << "send sms to: " << addressbook[contact] << " : " << message << endl;
     } 
 
