@@ -1,17 +1,26 @@
 #include <iostream>
-#include <map>
+#include <vector>
 #include <string>
 using namespace std;
 
-class Mobilephone 
+class Phone
 {
   private:
-  map <string, string> addressbook;
+  class Contact
+  {
+    public:
+    string name;
+    string phonenumber;
+  };
+  vector <Contact> addressbook;
 
   public:
   void addcontact(string* name, string* phonenumber)
   {
-    addressbook.insert(pair <string, string> (*name, *phonenumber));
+    Contact contact;
+    contact.name = *name;
+    contact.phonenumber = *phonenumber;
+    addressbook.push_back(contact);
     cout << "contact add" << endl;
     
   }
@@ -19,35 +28,49 @@ class Mobilephone
   void call()
   {
     string contact;
-    cout << "enter name contact: ";
+    cout << "enter name contact or phone number: ";
     cin >> contact;
 
-    if(addressbook.count(contact) > 0)
+    bool found = false;
+    for(int i = 0; i < addressbook.size(); i ++)
     {
-      cout << "call " << addressbook[contact] << endl;
+      if (contact == addressbook[i].name || contact ==addressbook[i].phonenumber)
+      {
+        cout << "call " << addressbook[i].phonenumber << endl;
+        found = true;
+        return;
+      }
     }
 
-    else
+    if(!found)
     {
       cout << "contact not found" << endl;
     }
+
+    
   }
 
   void sendsms()
   {
     string contact, message;
-    cout << "enter name contact: ";
+    cout << "enter name contact or phonenumber: ";
     cin >> contact;
 
-    if(addressbook.count(contact) > 0)
-    {
-      cout << "enter message: ";
-      cin.ignore();
-      getline(cin, message);
-      cout << "send sms to: " << addressbook[contact] << " : " << message << endl;
-    } 
+    bool found = 0;
 
-    else
+    for(int i = 0; i < addressbook.size(); i ++)
+    {
+      if (contact == addressbook[i].name || contact ==addressbook[i].phonenumber)
+      {
+        cout << "enter message:";
+        cin.ignore();
+        getline(cin, message);
+        cout << "send sms: " << addressbook[i].phonenumber << " " << message << endl;
+        found = true;
+        return;
+      }
+    }
+    if(!found)
     {
       cout << "contact not found" << endl;
     }
@@ -58,7 +81,7 @@ class Mobilephone
 
 int main()
 {
- Mobilephone phone;
+ Phone phone;
  string command;
 
  while(command != "exit")
